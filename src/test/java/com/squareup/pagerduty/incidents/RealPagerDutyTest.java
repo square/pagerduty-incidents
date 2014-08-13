@@ -8,9 +8,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.data.MapEntry.entry;
 import static org.junit.Assert.fail;
 
-public final class PagerDutyTest {
+public final class RealPagerDutyTest {
   private RecordingEventService service = new RecordingEventService();
-  private PagerDuty pagerDuty = new PagerDuty("123456", service);
+  private PagerDuty pagerDuty = new RealPagerDuty("123456", service);
 
   @Test public void basicTrigger() {
     pagerDuty.newTrigger("Paper cut").execute();

@@ -21,8 +21,7 @@ public final class IncidentResult {
   private final String message;
   private final String incident_key;
 
-  @SuppressWarnings("UnusedDeclaration") // Hidden from public API, required for final fields.
-  private IncidentResult(String status, String message, String incidentKey) {
+  IncidentResult(String status, String message, String incidentKey) {
     this.status = status;
     this.message = message;
     this.incident_key = incidentKey;
