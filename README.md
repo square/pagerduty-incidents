@@ -8,7 +8,41 @@ Utility for programmatically triggering and resolving PagerDuty incidents.
 Usage
 -----
 
-TODO
+Create an instance with your service's API key:
+```java
+PagerDuty pagerDuty = PagerDuty.create("API key");
+```
+
+Triggering an incident requires only a description of the problem:
+```java
+IncidentResult result = pagerDuty.newTrigger("Sync responded with code: " + code)
+    .execute();
+```
+The returned `IncidentResult` object will contain a generated incident key.
+
+You can also specify a custom incident key as well as additional name-value details:
+```java
+pagerDuty.newTrigger("Sync responded with code: " + code)
+    .withKey("feed-sync-12")
+    .addDetails("Foo", "Bar")
+    .addDetails(ImmutableMap.of("Ping", "Pong", "Kit", "Kat"))
+    .execute();
+```
+
+Resolving an incident requires its key: 
+```java
+pagerDuty.newResolution("feed-sync-12")
+    .execute()
+```
+
+A description and additional name-value details can also be specified on resolutions:
+```java
+pagerDuty.newResolution("feed-sync-12")
+    .withDescription("Sync healthy with code: " + code)
+    .addDetails("Foo", "Bar")
+    .addDetails(ImmutableMap.of("Ping", "Pong", "Kit", "Kat"))
+    .execute()
+```
 
 
 
