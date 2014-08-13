@@ -44,6 +44,9 @@ pagerDuty.newResolution("feed-sync-12")
     .execute()
 ```
 
+A `FakePagerDuty` class is provided for testing purposes which behaves similarly to a real
+PagerDuty backend.
+
 
 
 Download
