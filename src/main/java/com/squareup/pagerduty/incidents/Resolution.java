@@ -15,10 +15,10 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.squareup.pagerduty.incidents.Util.checkNotNull;
 import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 
 /** Resolve an existing incident. */
@@ -31,7 +31,7 @@ public final class Resolution extends Event {
   public static final class Builder {
     private final String incidentKey;
     private String description;
-    private ImmutableMap.Builder<String, String> details = ImmutableMap.builder();
+    private Map<String, String> details = new LinkedHashMap<>();
 
     /**
      * Build data to resolve an incident with the specified {@code incidentKey}.
@@ -64,7 +64,7 @@ public final class Resolution extends Event {
     }
 
     public Resolution build() {
-      return new Resolution(incidentKey, description, details.build());
+      return new Resolution(incidentKey, description, details);
     }
   }
 }

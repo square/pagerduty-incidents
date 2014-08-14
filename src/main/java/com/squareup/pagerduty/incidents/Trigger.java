@@ -15,11 +15,11 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.squareup.pagerduty.incidents.Util.checkArgument;
+import static com.squareup.pagerduty.incidents.Util.checkNotNull;
 import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 
 /** Report a new or ongoing problem. */
@@ -34,7 +34,7 @@ public final class Trigger extends Event {
   public static final class Builder {
     private final String description;
     private String incidentKey;
-    private ImmutableMap.Builder<String, String> details = ImmutableMap.builder();
+    private Map<String, String> details = new LinkedHashMap<>();
 
     /**
      * Build data to trigger a new incident.
@@ -80,7 +80,7 @@ public final class Trigger extends Event {
     }
 
     public Trigger build() {
-      return new Trigger(incidentKey, description, details.build());
+      return new Trigger(incidentKey, description, details);
     }
   }
 }
