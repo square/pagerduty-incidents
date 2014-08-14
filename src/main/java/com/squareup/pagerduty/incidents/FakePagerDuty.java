@@ -15,10 +15,11 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import com.google.common.collect.ImmutableMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * A fake implementation of {@link PagerDuty} that keeps track of open and closed incidents in
@@ -67,14 +68,14 @@ public final class FakePagerDuty extends PagerDuty {
   /** A snapshot of the current open incidents and their descriptions. */
   public Map<String, String> openIncidents() {
     synchronized (this) {
-      return ImmutableMap.copyOf(openIncidents);
+      return unmodifiableMap(new LinkedHashMap<>(openIncidents));
     }
   }
 
   /** A snapshot of the current closed incidents and their descriptions. */
   public Map<String, String> closedIncidents() {
     synchronized (this) {
-      return ImmutableMap.copyOf(closedIncidents);
+      return unmodifiableMap(new LinkedHashMap<>(closedIncidents));
     }
   }
 

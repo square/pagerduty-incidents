@@ -15,9 +15,6 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 final class Util {
   private Util() {
     throw new AssertionError("No instances.");
@@ -28,5 +25,18 @@ final class Util {
     checkNotNull(s, name);
     checkArgument(!s.trim().isEmpty(), "'" + name + "' must not be blank. Was: '" + s + "'");
     return s;
+  }
+
+  static <T> T checkNotNull(T value, String name) {
+    if (value == null) {
+      throw new NullPointerException(name);
+    }
+    return value;
+  }
+
+  static void checkArgument(boolean condition, String message) {
+    if (!condition) {
+      throw new IllegalArgumentException(message);
+    }
   }
 }

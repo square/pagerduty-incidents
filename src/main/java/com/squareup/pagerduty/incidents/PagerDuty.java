@@ -15,11 +15,10 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import com.google.common.annotations.VisibleForTesting;
 import retrofit.Endpoints;
 import retrofit.RestAdapter;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.squareup.pagerduty.incidents.Util.checkNotNull;
 import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 
 /** Utility for triggering and resolving PagerDuty incidents. */
@@ -42,7 +41,6 @@ public abstract class PagerDuty {
     return realPagerDuty(apiKey, restAdapter.create(EventService.class));
   }
 
-  @VisibleForTesting
   static PagerDuty realPagerDuty(final String apiKey, final EventService service) {
     return new PagerDuty() {
       @Override public NotifyResult notify(Trigger trigger) {

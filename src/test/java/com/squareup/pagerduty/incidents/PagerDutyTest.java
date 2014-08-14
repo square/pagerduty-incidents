@@ -15,7 +15,6 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 import static com.squareup.pagerduty.incidents.EventAssert.assertThat;
@@ -25,7 +24,7 @@ import static org.junit.Assert.fail;
 
 public final class PagerDutyTest {
   private final RecordingEventService service = new RecordingEventService();
-  private final PagerDuty pagerDuty = PagerDuty.create((String) "123456", (String) service);
+  private final PagerDuty pagerDuty = PagerDuty.realPagerDuty("123456", service);
 
   @Test public void basicTrigger() {
     Trigger trigger = new Trigger.Builder("Paper cut").build();
@@ -43,7 +42,7 @@ public final class PagerDutyTest {
     Trigger trigger = new Trigger.Builder("Paper cut")
         .withIncidentKey("ouch")
         .addDetails("Location", "Left index finger")
-        .addDetails(ImmutableMap.of("Foo", "Bar", "Kit", "Kat"))
+        .addDetails(TestUtil.map("Foo", "Bar", "Kit", "Kat"))
         .build();
     pagerDuty.notify(trigger);
 
@@ -72,7 +71,7 @@ public final class PagerDutyTest {
     Resolution resolution = new Resolution.Builder("ouch")
         .withDescription("Band Aid was applied")
         .addDetails("Location", "Left index finger")
-        .addDetails(ImmutableMap.of("Foo", "Bar", "Kit", "Kat"))
+        .addDetails(TestUtil.map("Foo", "Bar", "Kit", "Kat"))
         .build();
     pagerDuty.notify(resolution);
 

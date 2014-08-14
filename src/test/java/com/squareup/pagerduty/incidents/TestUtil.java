@@ -18,26 +18,21 @@ package com.squareup.pagerduty.incidents;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class Event {
-  static final String TYPE_TRIGGER = "trigger";
-  static final String TYPE_RESOLVE = "resolve";
+import static java.util.Collections.unmodifiableMap;
 
-  final String service_key;
-  final String incident_key;
-  final String event_type;
-  final String description;
-  final Map<String, String> details;
-
-  Event(String serviceKey, String incidentKey, String eventType, String description,
-      Map<String, String> details) {
-    this.service_key = serviceKey;
-    this.incident_key = incidentKey;
-    this.event_type = eventType;
-    this.description = description;
-    this.details = new LinkedHashMap<>(details);
+final class TestUtil {
+  private TestUtil() {
+    throw new AssertionError("No instances.");
   }
 
-  Event withApiKey(String apiKey) {
-    return new Event(apiKey, incident_key, event_type, description, details);
+  static Map<String, String> map(String... keysAndValues) {
+    if (keysAndValues.length % 2 != 0) {
+      throw new IllegalArgumentException("Argument count must be even.");
+    }
+    Map<String, String> map = new LinkedHashMap<>();
+    for (int i = 0; i < keysAndValues.length; i+= 2) {
+      map.put(keysAndValues[i], keysAndValues[i + 1]);
+    }
+    return unmodifiableMap(map);
   }
 }
