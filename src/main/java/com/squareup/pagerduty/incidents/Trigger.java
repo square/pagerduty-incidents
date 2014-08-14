@@ -39,10 +39,10 @@ public final class Trigger extends Event {
     /**
      * Build data to trigger a new incident.
      *
-     * @param description A short description of the problem that led to this trigger. This field (or
-     * a truncated version) will be used when generating phone calls, SMS messages and alert emails.
-     * It will also appear on the incidents tables in the PagerDuty UI. The maximum length is 1024
-     * characters.
+     * @param description A short description of the problem that led to this trigger. This field
+     * (or a truncated version) will be used when generating phone calls, SMS messages and alert
+     * emails. It will also appear on the incidents tables in the PagerDuty UI. The maximum length
+     * is 1024 characters.
      */
     public Builder(String description) {
       checkStringArgument(description, "description");
