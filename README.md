@@ -15,33 +15,35 @@ PagerDuty pagerDuty = PagerDuty.create("API key");
 
 Triggering an incident requires only a description of the problem:
 ```java
-IncidentResult result = pagerDuty.newTrigger("Sync responded with code: " + code)
-    .execute();
+Trigger trigger = new Trigger.Builder("Sync responded with code: " + code).build();
+NotifyResult result = pagerDuty.notify(trigger);
 ```
-The returned `IncidentResult` object will contain a generated incident key.
+The returned `NotifyResult` object will contain a generated incident key.
 
 You can also specify a custom incident key as well as additional name-value details:
 ```java
-pagerDuty.newTrigger("Sync responded with code: " + code)
+Trigger trigger = new Trigger.Builder("Sync responded with code: " + code)
     .withKey("feed-sync-12")
     .addDetails("Foo", "Bar")
     .addDetails(ImmutableMap.of("Ping", "Pong", "Kit", "Kat"))
-    .execute();
+    .build();
+pagerDuty.notify(trigger);
 ```
 
 Resolving an incident requires its key: 
 ```java
-pagerDuty.newResolution("feed-sync-12")
-    .execute()
+Resolution resolution = new Resolution.Builder("feed-sync-12").build();
+pagerDuty.notify(resolution);
 ```
 
 A description and additional name-value details can also be specified on resolutions:
 ```java
-pagerDuty.newResolution("feed-sync-12")
+Resolution resolution = new Resolution.Builder("feed-sync-12")
     .withDescription("Sync healthy with code: " + code)
     .addDetails("Foo", "Bar")
     .addDetails(ImmutableMap.of("Ping", "Pong", "Kit", "Kat"))
-    .execute()
+    .build()
+pagerDuty.notify(resolution);
 ```
 
 A `FakePagerDuty` class is provided for testing purposes which behaves similarly to a real
