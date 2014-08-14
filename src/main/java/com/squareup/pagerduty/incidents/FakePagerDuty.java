@@ -18,33 +18,50 @@ package com.squareup.pagerduty.incidents;
 import com.google.common.collect.ImmutableMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Random;
 
 /**
  * A fake implementation of {@link PagerDuty} that keeps track of open and closed incidents in
  * memory.
  */
 public final class FakePagerDuty extends PagerDuty {
-  public static FakePagerDuty create() {
-    return new FakePagerDuty();
-  }
-
   private final Map<String, String> openIncidents;
   private final Map<String, String> closedIncidents;
-  private final PagerDuty proxy;
+  private final Random random;
 
-  private FakePagerDuty() {
+  public FakePagerDuty() {
+    this(new Random());
+  }
+
+  public FakePagerDuty(Random random) {
     openIncidents = new LinkedHashMap<>();
     closedIncidents = new LinkedHashMap<>();
-    proxy = new RealPagerDuty("fake", new FakeEventService());
+    this.random = random;
   }
 
-  @Override public TriggerBuilder newTrigger(String description) {
-    return proxy.newTrigger(description);
+  @Override public NotifyResult notify(Trigger trigger) {
+    String incidentKey = trigger.incident_key;
+    if (incidentKey == null) {
+      incidentKey = "incident-" + random.nextLong();
+    }
+    synchronized (this) {
+      closedIncidents.remove(incidentKey);
+      if (!openIncidents.containsKey(incidentKey)) {
+        openIncidents.put(incidentKey, trigger.description);
+      }
+    }
+    return new NotifyResult("success", "Event recorded", incidentKey);
   }
 
-  @Override public ResolutionBuilder newResolution(String incidentKey) {
-    return proxy.newResolution(incidentKey);
+  @Override public NotifyResult notify(Resolution resolution) {
+    String incidentKey = resolution.incident_key;
+    synchronized (this) {
+      String description = openIncidents.remove(incidentKey);
+      if (description != null) {
+        closedIncidents.put(incidentKey, description);
+      }
+    }
+    return new NotifyResult("success", "Event recorded", incidentKey);
   }
 
   /** A snapshot of the current open incidents and their descriptions. */
@@ -66,33 +83,6 @@ public final class FakePagerDuty extends PagerDuty {
     synchronized (this) {
       openIncidents.clear();
       closedIncidents.clear();
-    }
-  }
-
-  private class FakeEventService implements EventService {
-    @Override public IncidentResult trigger(Event event) {
-      String incidentKey = event.incident_key;
-      if (incidentKey == null) {
-        incidentKey = UUID.randomUUID().toString();
-      }
-      synchronized (FakePagerDuty.this) {
-        closedIncidents.remove(incidentKey);
-        if (!openIncidents.containsKey(incidentKey)) {
-          openIncidents.put(incidentKey, event.description);
-        }
-      }
-      return new IncidentResult("success", "Event recorded", incidentKey);
-    }
-
-    @Override public IncidentResult resolve(Event event) {
-      String incidentKey = event.incident_key;
-      synchronized (FakePagerDuty.this) {
-        String description = openIncidents.remove(incidentKey);
-        if (description != null) {
-          closedIncidents.put(incidentKey, description);
-        }
-      }
-      return new IncidentResult("success", "Event recorded", incidentKey);
     }
   }
 }

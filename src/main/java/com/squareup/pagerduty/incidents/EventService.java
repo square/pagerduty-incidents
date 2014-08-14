@@ -23,11 +23,6 @@ import retrofit.http.POST;
  * documentation</a>.
  */
 interface EventService {
-  String URL_CREATE_EVENT = "/generic/2010-04-15/create_event.json";
-
-  @POST(URL_CREATE_EVENT) //
-  IncidentResult trigger(@Body Event event);
-
-  @POST(URL_CREATE_EVENT) //
-  IncidentResult resolve(@Body Event event);
+  @POST("/generic/2010-04-15/create_event.json") //
+  NotifyResult notify(@Body Event event);
 }
