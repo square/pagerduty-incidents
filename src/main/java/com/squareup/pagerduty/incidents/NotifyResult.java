@@ -16,12 +16,12 @@
 package com.squareup.pagerduty.incidents;
 
 /** Response data from triggering or resolving an incident. */
-public final class IncidentResult {
+public final class NotifyResult {
   private final String status;
   private final String message;
   private final String incident_key;
 
-  IncidentResult(String status, String message, String incidentKey) {
+  NotifyResult(String status, String message, String incidentKey) {
     this.status = status;
     this.message = message;
     this.incident_key = incidentKey;

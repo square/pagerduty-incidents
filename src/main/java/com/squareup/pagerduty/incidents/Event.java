@@ -18,7 +18,7 @@ package com.squareup.pagerduty.incidents;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
-final class Event {
+class Event {
   static final String TYPE_TRIGGER = "trigger";
   static final String TYPE_RESOLVE = "resolve";
 
@@ -34,6 +34,10 @@ final class Event {
     this.incident_key = incidentKey;
     this.event_type = eventType;
     this.description = description;
-    this.details = details.isEmpty() ? null : ImmutableMap.copyOf(details);
+    this.details = ImmutableMap.copyOf(details);
+  }
+
+  Event withApiKey(String apiKey) {
+    return new Event(apiKey, incident_key, event_type, description, details);
   }
 }
