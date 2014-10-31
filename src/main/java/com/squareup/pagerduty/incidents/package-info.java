@@ -20,7 +20,7 @@
  * You can also specify a custom incident key as well as additional name-value details:
  * <pre>{@code
  * Trigger trigger = new Trigger.Builder("Sync responded with code: " + code)
- *     .withKey("feed-sync-12")
+ *     .withIncidentKey("feed-sync-12")
  *     .addDetails("Foo", "Bar")
  *     .addDetails(ImmutableMap.of("Ping", "Pong", "Kit", "Kat"))
  *     .build();
