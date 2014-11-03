@@ -26,18 +26,22 @@ class Event {
   final String incident_key;
   final String event_type;
   final String description;
+  final String client;
+  final String client_url;
   final Map<String, String> details;
 
-  Event(String serviceKey, String incidentKey, String eventType, String description,
-      Map<String, String> details) {
+  Event(String serviceKey, String incidentKey, String eventType, String description, String client,
+      String clientUrl, Map<String, String> details) {
     this.service_key = serviceKey;
     this.incident_key = incidentKey;
     this.event_type = eventType;
     this.description = description;
+    this.client = client;
+    this.client_url = clientUrl;
     this.details = new LinkedHashMap<>(details);
   }
 
   Event withApiKey(String apiKey) {
-    return new Event(apiKey, incident_key, event_type, description, details);
+    return new Event(apiKey, incident_key, event_type, description, client, client_url, details);
   }
 }
