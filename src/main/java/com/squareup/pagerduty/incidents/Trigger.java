@@ -26,14 +26,21 @@ import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 public final class Trigger extends Event {
   private static final int MAX_DESCRIPTION_LENGTH = 1024;
 
-  private Trigger(String incidentKey, String description, Map<String, String> details) {
-    super(null, incidentKey, TYPE_TRIGGER, description, details);
+  private Trigger(String incidentKey, String description, String client, String clientUrl,
+      Map<String, String> details) {
+    super(null, incidentKey, TYPE_TRIGGER, description, client, clientUrl, details);
   }
 
-  /** Fluent interface for building trigger data. */
+  /**
+   * Fluent interface for building trigger data.
+   * <p>
+   * Calling {@link #withIncidentKey} is required. All other data is optional.
+   */
   public static final class Builder {
     private final String description;
     private String incidentKey;
+    private String client;
+    private String clientUrl;
     private Map<String, String> details = new LinkedHashMap<>();
 
     /**
@@ -66,7 +73,19 @@ public final class Trigger extends Event {
       return this;
     }
 
-    /** An arbitrary name-value pair which will be included in incident the log. */
+    /** The name of the monitoring client that is triggering this event.*/
+    public Builder client(String client) {
+      this.client = checkStringArgument(client, "client");
+      return this;
+    }
+
+    /** The URL of the monitoring client that is triggering this event. */
+    public Builder clientUrl(String clientUrl) {
+      this.clientUrl = checkStringArgument(clientUrl, "clientUrl");
+      return this;
+    }
+
+    /** An arbitrary name-value pair which will be included in incident the log.*/
     public Builder addDetails(String name, String value) {
       details.put(checkStringArgument(name, "name"), value);
       return this;
@@ -80,7 +99,7 @@ public final class Trigger extends Event {
     }
 
     public Trigger build() {
-      return new Trigger(incidentKey, description, details);
+      return new Trigger(incidentKey, description, client, clientUrl, details);
     }
   }
 }
