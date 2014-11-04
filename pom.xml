@@ -11,7 +11,7 @@
 
   <groupId>com.squareup.pagerduty</groupId>
   <artifactId>pagerduty-incidents</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
 
   <name>PagerDuty Incidents</name>
   <description>Java utility for programmatically triggering and resolving PagerDuty incidents.</description>
