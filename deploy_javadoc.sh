@@ -2,7 +2,7 @@
 
 set -ex
 
-REPO="git@github.com:square/pagerduty-incidents-java.git"
+REPO="git@github.com:square/pagerduty-incidents.git"
 GROUP_ID="com.squareup.pagerduty"
 ARTIFACT_ID="pagerduty-incidents"
 
