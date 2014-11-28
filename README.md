@@ -30,7 +30,7 @@ Trigger trigger = new Trigger.Builder("Sync responded with code: " + code)
 pagerDuty.notify(trigger);
 ```
 
-Resolving an incident requires its key: 
+Resolving an incident requires its key:
 ```java
 Resolution resolution = new Resolution.Builder("feed-sync-12").build();
 pagerDuty.notify(resolution);
@@ -88,4 +88,4 @@ License
 
 
 
- [dl]: http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.squareup.pagerduty&a=pagerduty-incidents&v=LATEST
+ [dl]: https://search.maven.org/remote_content?g=com.squareup.pagerduty&a=pagerduty-incidents&v=LATEST
