@@ -67,6 +67,8 @@ or Gradle:
 compile 'com.squareup.pagerduty:pagerduty-incidents:1.0.1'
 ```
 
+Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
+
 
 
 License
@@ -89,3 +91,4 @@ License
 
 
  [dl]: https://search.maven.org/remote_content?g=com.squareup.pagerduty&a=pagerduty-incidents&v=LATEST
+ [snap]: https://oss.sonatype.org/content/repositories/snapshots/
