@@ -15,6 +15,7 @@
  */
 package com.squareup.pagerduty.incidents;
 
+import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.POST;
 
@@ -24,5 +25,5 @@ import retrofit.http.POST;
  */
 interface EventService {
   @POST("/generic/2010-04-15/create_event.json") //
-  NotifyResult notify(@Body Event event);
+  Call<NotifyResult> notify(@Body Event event);
 }

@@ -15,6 +15,7 @@
  */
 package com.squareup.pagerduty.incidents;
 
+import java.io.IOException;
 import org.junit.Test;
 
 import static com.squareup.pagerduty.incidents.EventAssert.assertThat;
@@ -26,7 +27,7 @@ public final class PagerDutyTest {
   private final RecordingEventService service = new RecordingEventService();
   private final PagerDuty pagerDuty = PagerDuty.realPagerDuty("123456", service);
 
-  @Test public void basicTrigger() {
+  @Test public void basicTrigger() throws IOException {
     Trigger trigger = new Trigger.Builder("Paper cut").build();
     pagerDuty.notify(trigger);
 
@@ -38,7 +39,7 @@ public final class PagerDutyTest {
         .hasNoDetails();
   }
 
-  @Test public void triggerWithBellsAndWhistles() {
+  @Test public void triggerWithBellsAndWhistles() throws IOException {
     Trigger trigger = new Trigger.Builder("Paper cut")
         .withIncidentKey("ouch")
         .addDetails("Location", "Left index finger")
@@ -55,7 +56,7 @@ public final class PagerDutyTest {
             entry("Kit", "Kat"));
   }
 
-  @Test public void basicResolve() {
+  @Test public void basicResolve() throws IOException {
     Resolution resolution = new Resolution.Builder("ouch").build();
     pagerDuty.notify(resolution);
 
@@ -67,7 +68,7 @@ public final class PagerDutyTest {
         .hasNoDetails();
   }
 
-  @Test public void resolveWithBellsAndWhistles() {
+  @Test public void resolveWithBellsAndWhistles() throws IOException {
     Resolution resolution = new Resolution.Builder("ouch")
         .withDescription("Band Aid was applied")
         .addDetails("Location", "Left index finger")
