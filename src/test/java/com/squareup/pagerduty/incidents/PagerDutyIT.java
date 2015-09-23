@@ -15,10 +15,12 @@
  */
 package com.squareup.pagerduty.incidents;
 
+import java.io.IOException;
+
 public final class PagerDutyIT {
   private static final String API_KEY = "YOUR API KEY";
 
-  public static void main(String... args) {
+  public static void main(String... args) throws IOException {
     PagerDuty pagerDuty = PagerDuty.create(API_KEY);
 
     NotifyResult trigger1 = pagerDuty.notify(new Trigger.Builder("Client IT trigger #1").build());

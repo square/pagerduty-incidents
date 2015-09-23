@@ -16,6 +16,8 @@
 package com.squareup.pagerduty.incidents;
 
 
+import java.io.IOException;
+import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 import static com.squareup.pagerduty.incidents.Util.checkNotNull;
@@ -29,6 +31,7 @@ public abstract class PagerDuty {
   public static PagerDuty create(String apiKey) {
     Retrofit retrofit = new Retrofit.Builder() //
         .baseUrl(HOST) //
+        .addConverterFactory(GsonConverterFactory.create())
         .build();
     return create(apiKey, retrofit);
   }
@@ -43,19 +46,19 @@ public abstract class PagerDuty {
 
   static PagerDuty realPagerDuty(final String apiKey, final EventService service) {
     return new PagerDuty() {
-      @Override public NotifyResult notify(Trigger trigger) {
-        return service.notify(trigger.withApiKey(apiKey));
+      @Override public NotifyResult notify(Trigger trigger) throws IOException {
+        return service.notify(trigger.withApiKey(apiKey)).execute().body();
       }
 
-      @Override public NotifyResult notify(Resolution resolution) {
-        return service.notify(resolution.withApiKey(apiKey));
+      @Override public NotifyResult notify(Resolution resolution) throws IOException {
+        return service.notify(resolution.withApiKey(apiKey)).execute().body();
       }
     };
   }
 
   /** Send an incident trigger notification to PagerDuty. */
-  public abstract NotifyResult notify(Trigger trigger);
+  public abstract NotifyResult notify(Trigger trigger) throws IOException;
 
   /** Send an incident resolution notification to PagerDuty. */
-  public abstract NotifyResult notify(Resolution resolution);
+  public abstract NotifyResult notify(Resolution resolution) throws IOException;
 }
