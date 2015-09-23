@@ -15,8 +15,8 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import retrofit.Endpoints;
-import retrofit.RestAdapter;
+
+import retrofit.Retrofit;
 
 import static com.squareup.pagerduty.incidents.Util.checkNotNull;
 import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
@@ -27,18 +27,18 @@ public abstract class PagerDuty {
 
   /** Create a new instance using the specified API key. */
   public static PagerDuty create(String apiKey) {
-    RestAdapter restAdapter = new RestAdapter.Builder() //
-        .setEndpoint(Endpoints.newFixedEndpoint(HOST)) //
+    Retrofit retrofit = new Retrofit.Builder() //
+        .baseUrl(HOST) //
         .build();
-    return create(apiKey, restAdapter);
+    return create(apiKey, retrofit);
   }
 
-  /** Create a new instance using the specified API key and configured {@link RestAdapter}. */
-  public static PagerDuty create(String apiKey, RestAdapter restAdapter) {
+  /** Create a new instance using the specified API key and configured {@link Retrofit}. */
+  public static PagerDuty create(String apiKey, Retrofit retrofit) {
     checkStringArgument(apiKey, "apiKey");
-    checkNotNull(restAdapter, "restAdapter");
+    checkNotNull(retrofit, "retrofit");
 
-    return realPagerDuty(apiKey, restAdapter.create(EventService.class));
+    return realPagerDuty(apiKey, retrofit.create(EventService.class));
   }
 
   static PagerDuty realPagerDuty(final String apiKey, final EventService service) {
