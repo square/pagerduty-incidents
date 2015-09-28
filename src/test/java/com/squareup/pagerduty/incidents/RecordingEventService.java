@@ -25,7 +25,7 @@ final class RecordingEventService implements EventService {
 
   @Override public Call<NotifyResult> notify(Event event) {
     events.add(event);
-    return Calls.response((NotifyResult) null);
+    return Calls.response((NotifyResult) null, null);
   }
 
   public Event takeEvent() {
