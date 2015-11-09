@@ -17,6 +17,9 @@ package com.squareup.pagerduty.incidents;
 
 
 import java.io.IOException;
+import java.net.Proxy;
+
+import com.squareup.okhttp.OkHttpClient;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
@@ -31,6 +34,21 @@ public abstract class PagerDuty {
   public static PagerDuty create(String apiKey) {
     Retrofit retrofit = new Retrofit.Builder() //
         .baseUrl(HOST) //
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+    return create(apiKey, retrofit);
+  }
+
+  public static PagerDuty create(String apiKey, Proxy proxy) {
+    OkHttpClient okHttpClient = new OkHttpClient();
+
+    checkNotNull(proxy, "proxy");   // Make sure the proxy argument is not null
+
+    okHttpClient.setProxy(proxy);
+
+    Retrofit retrofit = new Retrofit.Builder() //
+        .baseUrl(HOST) //
+        .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build();
     return create(apiKey, retrofit);
