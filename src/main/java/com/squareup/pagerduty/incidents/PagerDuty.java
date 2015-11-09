@@ -47,10 +47,10 @@ public abstract class PagerDuty {
     okHttpClient.setProxy(proxy);
 
     Retrofit retrofit = new Retrofit.Builder() //
-            .baseUrl(HOST) //
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+        .baseUrl(HOST) //
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
     return create(apiKey, retrofit);
   }
 
