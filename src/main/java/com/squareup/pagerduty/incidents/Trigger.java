@@ -15,7 +15,9 @@
  */
 package com.squareup.pagerduty.incidents;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.squareup.pagerduty.incidents.Util.checkArgument;
@@ -25,10 +27,12 @@ import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 /** Report a new or ongoing problem. */
 public final class Trigger extends Event {
   private static final int MAX_DESCRIPTION_LENGTH = 1024;
+  private final List<Context> contexts;
 
   private Trigger(String incidentKey, String description, String client, String clientUrl,
-      Map<String, String> details) {
+      Map<String, String> details, List<Context> contexts) {
     super(null, incidentKey, TYPE_TRIGGER, description, client, clientUrl, details);
+    this.contexts = contexts;
   }
 
   /**
@@ -36,12 +40,14 @@ public final class Trigger extends Event {
    * <p>
    * Calling {@link #withIncidentKey} is required. All other data is optional.
    */
+
   public static final class Builder {
     private final String description;
     private String incidentKey;
     private String client;
     private String clientUrl;
     private Map<String, String> details = new LinkedHashMap<>();
+    private List<Context> contexts = new ArrayList<Context>();
 
     /**
      * Build data to trigger a new incident.
@@ -91,6 +97,18 @@ public final class Trigger extends Event {
       return this;
     }
 
+    /** A link to be attached to the pager duty notification.*/
+    public Builder addLink(Link link) {
+      contexts.add(link);
+      return this;
+    }
+
+    /** An image to be attached to the pager duty notification.*/
+    public Builder addImage(Image image) {
+      contexts.add(image);
+      return this;
+    }
+
     /** Arbitrary name-value pairs which will be included in incident the log. */
     public Builder addDetails(Map<String, String> details) {
       checkNotNull(details, "details");
@@ -99,7 +117,7 @@ public final class Trigger extends Event {
     }
 
     public Trigger build() {
-      return new Trigger(incidentKey, description, client, clientUrl, details);
+      return new Trigger(incidentKey, description, client, clientUrl, details, contexts);
     }
   }
 }
