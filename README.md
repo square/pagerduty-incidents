@@ -30,6 +30,25 @@ Trigger trigger = new Trigger.Builder("Sync responded with code: " + code)
 pagerDuty.notify(trigger);
 ```
 
+Trigger an incident with images:
+```java
+Trigger trigger = new Trigger.Builder("Sync responded with code: " + code)
+    .addImage(Image.withoutOptional("example.com/image.jpg"));
+    .addImage(Image.withOptional("example.com/image.jpg", "example.com/alt.jpg", "alternative text"));
+    .build();
+pagerDuty.notify(trigger);
+```
+
+Trigger an incident with links:
+```java
+Trigger trigger = new Trigger.Builder("Sync responded with code: " + code)
+    .addLink(Link.withoutText("example.com/somefile.txt"));
+    .addLink(Link.withText("example.com/somefile.txt", "Some text"));
+    .build();
+pagerDuty.notify(trigger);
+```
+
+
 Resolving an incident requires its key:
 ```java
 Resolution resolution = new Resolution.Builder("feed-sync-12").build();
