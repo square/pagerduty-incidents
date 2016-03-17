@@ -15,10 +15,9 @@
  */
 package com.squareup.pagerduty.incidents;
 
-
 import java.io.IOException;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.squareup.pagerduty.incidents.Util.checkNotNull;
 import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
