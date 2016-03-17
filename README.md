@@ -59,12 +59,12 @@ Download [the latest .jar][dl] or depend via Maven:
 <dependency>
   <groupId>com.squareup.pagerduty</groupId>
   <artifactId>pagerduty-incidents</artifactId>
-  <version>1.0.1</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.squareup.pagerduty:pagerduty-incidents:1.0.1'
+compile 'com.squareup.pagerduty:pagerduty-incidents:2.0.0'
 ```
 
 Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
