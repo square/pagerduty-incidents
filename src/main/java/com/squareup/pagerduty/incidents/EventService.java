@@ -15,9 +15,9 @@
  */
 package com.squareup.pagerduty.incidents;
 
-import retrofit.Call;
-import retrofit.http.Body;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 /**
  * @see <a href="http://developer.pagerduty.com/documentation/integration/events">PagerDuty

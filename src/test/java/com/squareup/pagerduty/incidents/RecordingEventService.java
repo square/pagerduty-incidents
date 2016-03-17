@@ -17,15 +17,15 @@ package com.squareup.pagerduty.incidents;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import retrofit.Call;
-import retrofit.mock.Calls;
+import retrofit2.Call;
+import retrofit2.mock.Calls;
 
 final class RecordingEventService implements EventService {
   private final Deque<Event> events = new ArrayDeque<>();
 
   @Override public Call<NotifyResult> notify(Event event) {
     events.add(event);
-    return Calls.response((NotifyResult) null, null);
+    return Calls.response((NotifyResult) null);
   }
 
   public Event takeEvent() {
