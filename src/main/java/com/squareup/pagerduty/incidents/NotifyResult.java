@@ -21,6 +21,12 @@ public final class NotifyResult {
   private final String message;
   private final String incident_key;
 
+  NotifyResult() {
+    this.status = null;
+    this.message = null;
+    this.incident_key = null;
+  }
+
   NotifyResult(String status, String message, String incidentKey) {
     this.status = status;
     this.message = message;
