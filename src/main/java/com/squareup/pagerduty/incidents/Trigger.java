@@ -26,8 +26,8 @@ import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 public final class Trigger extends Event {
   private static final int MAX_DESCRIPTION_LENGTH = 1024;
 
-  private Trigger(String serviceKey, String incidentKey, String description, String client, String clientUrl,
-      Map<String, String> details) {
+  private Trigger(String serviceKey, String incidentKey, String description,
+      String client, String clientUrl, Map<String, String> details) {
     super(serviceKey, incidentKey, TYPE_TRIGGER, description, client, clientUrl, details);
   }
 

@@ -23,7 +23,8 @@ import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 
 /** Resolve an existing incident. */
 public final class Resolution extends Event {
-  private Resolution(String serviceKey, String incidentKey, String description, Map<String, String> details) {
+  private Resolution(String serviceKey, String incidentKey, String description,
+      Map<String, String> details) {
     super(serviceKey, incidentKey, TYPE_RESOLVE, description, null, null, details);
   }
 
