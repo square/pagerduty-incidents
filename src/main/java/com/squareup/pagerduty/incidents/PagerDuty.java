@@ -46,11 +46,19 @@ public abstract class PagerDuty {
   static PagerDuty realPagerDuty(final String apiKey, final EventService service) {
     return new PagerDuty() {
       @Override public NotifyResult notify(Trigger trigger) throws IOException {
-        return service.notify(trigger.withApiKey(apiKey)).execute().body();
+        if (trigger.service_key == null) {
+          return service.notify(trigger.withApiKey(apiKey)).execute().body();
+        } else {
+          return service.notify(trigger).execute().body();
+        }
       }
 
       @Override public NotifyResult notify(Resolution resolution) throws IOException {
-        return service.notify(resolution.withApiKey(apiKey)).execute().body();
+        if (resolution.service_key == null) {
+          return service.notify(resolution.withApiKey(apiKey)).execute().body();
+        } else {
+          return service.notify(resolution).execute().body();
+        }
       }
     };
   }

@@ -26,9 +26,9 @@ import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 public final class Trigger extends Event {
   private static final int MAX_DESCRIPTION_LENGTH = 1024;
 
-  private Trigger(String incidentKey, String description, String client, String clientUrl,
+  private Trigger(String serviceKey, String incidentKey, String description, String client, String clientUrl,
       Map<String, String> details) {
-    super(null, incidentKey, TYPE_TRIGGER, description, client, clientUrl, details);
+    super(serviceKey, incidentKey, TYPE_TRIGGER, description, client, clientUrl, details);
   }
 
   /**
@@ -38,10 +38,29 @@ public final class Trigger extends Event {
    */
   public static final class Builder {
     private final String description;
+    private String serviceKey;
     private String incidentKey;
     private String client;
     private String clientUrl;
     private Map<String, String> details = new LinkedHashMap<>();
+
+    /**
+     * Build data to trigger a new incident.
+     *
+     * @param serviceKey Identifies the service too which the incident belongs.  This should be
+     * the Integration Key listed in the PagerDuty UI for the Service on its integrations tab.
+     * @param description A short description of the problem that led to this trigger. This field
+     * (or a truncated version) will be used when generating phone calls, SMS messages and alert
+     * emails. It will also appear on the incidents tables in the PagerDuty UI. The maximum length
+     * is 1024 characters.
+     */
+    public Builder(String serviceKey, String description) {
+      checkStringArgument(serviceKey, "serviceKey");
+      validateDescription(description);
+
+      this.serviceKey = serviceKey;
+      this.description = description;
+    }
 
     /**
      * Build data to trigger a new incident.
@@ -52,13 +71,18 @@ public final class Trigger extends Event {
      * is 1024 characters.
      */
     public Builder(String description) {
-      checkStringArgument(description, "description");
-      checkArgument(description.length() <= MAX_DESCRIPTION_LENGTH, "'description' length must be "
-          + MAX_DESCRIPTION_LENGTH
-          + " or less. Was: "
-          + description.length());
+      validateDescription(description);
 
       this.description = description;
+    }
+
+
+    /**
+     * The integration key for the service as configured within Pagerduty.
+     */
+    public Builder withServiceKey(String serviceKey) {
+      this.serviceKey = checkStringArgument(serviceKey, "serviceKey");
+      return this;
     }
 
     /**
@@ -99,7 +123,15 @@ public final class Trigger extends Event {
     }
 
     public Trigger build() {
-      return new Trigger(incidentKey, description, client, clientUrl, details);
+      return new Trigger(serviceKey, incidentKey, description, client, clientUrl, details);
+    }
+
+    private static void validateDescription(String description) {
+      checkStringArgument(description, "description");
+      checkArgument(description.length() <= MAX_DESCRIPTION_LENGTH, "'description' length must be "
+               + MAX_DESCRIPTION_LENGTH
+               + " or less. Was: "
+               + description.length());
     }
   }
 }

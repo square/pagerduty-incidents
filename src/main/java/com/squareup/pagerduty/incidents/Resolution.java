@@ -23,13 +23,14 @@ import static com.squareup.pagerduty.incidents.Util.checkStringArgument;
 
 /** Resolve an existing incident. */
 public final class Resolution extends Event {
-  private Resolution(String incidentKey, String description, Map<String, String> details) {
-    super(null, incidentKey, TYPE_RESOLVE, description, null, null, details);
+  private Resolution(String serviceKey, String incidentKey, String description, Map<String, String> details) {
+    super(serviceKey, incidentKey, TYPE_RESOLVE, description, null, null, details);
   }
 
   /** Fluent interface for building resolution data. */
   public static final class Builder {
     private final String incidentKey;
+    private String serviceKey;
     private String description;
     private Map<String, String> details = new LinkedHashMap<>();
 
@@ -41,6 +42,21 @@ public final class Resolution extends Event {
      * referencing resolved or nonexistent incidents will be discarded.
      */
     public Builder(String incidentKey) {
+      this.incidentKey = checkStringArgument(incidentKey, "incidentKey");
+    }
+
+    /**
+     * Build data to resolve an incident with the specified {@code serviceKey} and
+     * {@code incidentKey}.
+     *
+     * @param serviceKey Identifies the service to which the incident belongs.  This should be the
+     * Integration Key listed in the PagerDuty UI for the Service on its integrations tab.
+     * @param incidentKey Identifies the incident to resolve. This should be the incident_key you
+     * received back when the incident was first opened by a trigger event. Resolve events
+     * referencing resolved or nonexistent incidents will be discarded.
+     */
+    public Builder(String serviceKey, String incidentKey) {
+      this.serviceKey = checkStringArgument(serviceKey, "serviceKey");
       this.incidentKey = checkStringArgument(incidentKey, "incidentKey");
     }
 
@@ -64,7 +80,7 @@ public final class Resolution extends Event {
     }
 
     public Resolution build() {
-      return new Resolution(incidentKey, description, details);
+      return new Resolution(serviceKey, incidentKey, description, details);
     }
   }
 }
