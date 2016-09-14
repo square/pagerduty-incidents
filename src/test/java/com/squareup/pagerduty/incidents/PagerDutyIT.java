@@ -17,11 +17,16 @@ package com.squareup.pagerduty.incidents;
 
 import java.io.IOException;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public final class PagerDutyIT {
-  private static final String API_KEY = "YOUR API KEY";
+  private static final String API_KEY = System.getenv("PAGERDUTY_API_KEY");
 
   public static void main(String... args) throws IOException {
-    PagerDuty pagerDuty = PagerDuty.create(API_KEY);
+    PagerDuty pagerDuty = buildPagerDuty(API_KEY);
 
     NotifyResult trigger1 = pagerDuty.notify(new Trigger.Builder("Client IT trigger #1").build());
 
@@ -46,5 +51,19 @@ public final class PagerDutyIT {
         .build());
 
     pagerDuty.notify(new Resolution.Builder("it-trigger-2").build());
+  }
+
+  private static PagerDuty buildPagerDuty(String apiKey) {
+    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+    OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(interceptor)
+                                                    .build();
+    Retrofit retrofit = new Retrofit.Builder()
+                                    .baseUrl("https://events.pagerduty.com")
+                                    .client(httpClient)
+                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .build();
+    return PagerDuty.create(apiKey, retrofit);
   }
 }
