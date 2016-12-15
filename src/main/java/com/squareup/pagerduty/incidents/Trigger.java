@@ -31,6 +31,11 @@ public final class Trigger extends Event {
     super(null, incidentKey, TYPE_TRIGGER, description, client, clientUrl, details);
   }
 
+  @Override
+  public String toString() {
+    return super.toString();
+  }
+
   /**
    * Fluent interface for building trigger data.
    * <p>

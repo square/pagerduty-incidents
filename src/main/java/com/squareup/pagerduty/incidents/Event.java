@@ -44,4 +44,17 @@ class Event {
   Event withApiKey(String apiKey) {
     return new Event(apiKey, incident_key, event_type, description, client, client_url, details);
   }
+
+  @Override
+  public String toString() {
+    return "Event{" +
+            "service_key='" + service_key + '\'' +
+            ", incident_key='" + incident_key + '\'' +
+            ", event_type='" + event_type + '\'' +
+            ", description='" + description + '\'' +
+            ", client='" + client + '\'' +
+            ", client_url='" + client_url + '\'' +
+            ", details=" + details +
+            '}';
+  }
 }
