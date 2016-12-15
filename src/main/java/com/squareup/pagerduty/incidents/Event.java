@@ -46,7 +46,7 @@ class Event {
   }
 
   @Override
-  public toString() {
+  public String toString() {
     return "Event{" +
             "service_key='" + service_key + '\'' +
             ", incident_key='" + incident_key + '\'' +
