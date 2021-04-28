@@ -39,6 +39,18 @@ public final class PagerDutyTest {
         .hasNoDetails();
   }
 
+  @Test public void triggerWithSpecifiedService() throws IOException {
+    Trigger trigger = new Trigger.Builder("serviceKey", "Paper cut").build();
+    pagerDuty.notify(trigger);
+
+    Event event = service.takeEvent();
+    assertThat(event).hasServiceKey("serviceKey")
+        .hasDescription("Paper cut")
+        .hasIncidentKey(null)
+        .hasEventType("trigger")
+        .hasNoDetails();
+  }
+
   @Test public void triggerWithBellsAndWhistles() throws IOException {
     Trigger trigger = new Trigger.Builder("Paper cut")
         .withIncidentKey("ouch")
@@ -62,6 +74,18 @@ public final class PagerDutyTest {
 
     Event event = service.takeEvent();
     assertThat(event).hasServiceKey("123456")
+        .hasIncidentKey("ouch")
+        .hasDescription(null)
+        .hasEventType("resolve")
+        .hasNoDetails();
+  }
+
+  @Test public void resolveWithServiceOverride() throws IOException {
+    Resolution resolution = new Resolution.Builder("serviceKey", "ouch").build();
+    pagerDuty.notify(resolution);
+
+    Event event = service.takeEvent();
+    assertThat(event).hasServiceKey("serviceKey")
         .hasIncidentKey("ouch")
         .hasDescription(null)
         .hasEventType("resolve")
