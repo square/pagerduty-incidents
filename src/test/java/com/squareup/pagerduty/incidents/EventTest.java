@@ -16,6 +16,7 @@
 package com.squareup.pagerduty.incidents;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +43,7 @@ public final class EventTest {
         + "\"load avg\":\"0.75\""
         + "}"
         + "}";
-    assertThat(actual).isEqualTo(expected);
+    JsonParser parser = new JsonParser();
+    assertThat(parser.parse(actual)).isEqualTo(parser.parse(expected));
   }
 }
